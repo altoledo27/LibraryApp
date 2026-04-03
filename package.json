@@ -26,6 +26,7 @@
     "mongodb": "^7.1.1",
     "mongoose": "^9.3.3",
     "nodemon": "^3.1.14",
+    "swagger": "^0.0.1",
     "swagger-autogen": "^2.23.7",
     "swagger-ui-express": "^5.0.1"
   },
