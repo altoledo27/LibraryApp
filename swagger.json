@@ -2,227 +2,1468 @@
   "swagger": "2.0",
   "info": {
     "title": "Library API",
-    "description": "API for managing library users and books",
+    "description": "This API is a ...",
     "version": "1.0.0"
   },
-  "host": "cse341-project-2-1yyy.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
-  "schemes": ["https"],
+  "schemes": [
+    "http"
+  ],
   "paths": {
-    "/login": {
+    "/": {
       "get": {
-        "tags": ["Authentication"],
-        "description": "Login with GitHub OAuth. Redirects to GitHub for authentication.",
+        "description": "",
         "responses": {
-          "302": { "description": "Redirects to GitHub for authentication" }
+          "200": {
+            "description": "OK"
+          }
         }
       }
     },
-    "/logout": {
+    "/api-docs/": {
       "get": {
-        "tags": ["Authentication"],
-        "description": "Logout current user and redirect to home page.",
+        "description": "",
         "responses": {
-          "302": { "description": "Redirects to home page after logout" }
+          "default": {
+            "description": ""
+          }
         }
+      }
+    },
+    "/authors/": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Get all library Authors",
+        "description": "Retrieves a list of all authors registered in the database.",
+        "responses": {
+          "200": {
+            "description": "A list of library authors retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "Samuel"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Clemens"
+                  },
+                  "pseudonym": {
+                    "type": "string",
+                    "example": "Mark Twain"
+                  },
+                  "birthDate": {
+                    "type": "string",
+                    "example": "1835-11-30"
+                  },
+                  "deathDate": {
+                    "type": "string",
+                    "example": "1910-04-21"
+                  },
+                  "nationality": {
+                    "type": "string",
+                    "example": "American"
+                  },
+                  "mainGenre": {
+                    "type": "string",
+                    "example": "Fiction"
+                  },
+                  "books": {
+                    "type": "array",
+                    "example": [
+                      "The Great Gatsby",
+                      "To Kill a Mockingbird"
+                    ],
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "pseudonym"
+                ]
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal server error while retrieving the author list"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Create a new author",
+        "description": "Creates a new author after validating their information.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "New author information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "pseudonym": {
+                  "type": "string",
+                  "example": "John Doe"
+                },
+                "birthDate": {
+                  "type": "string",
+                  "example": "1980-01-01"
+                },
+                "deathDate": {
+                  "type": "string",
+                  "example": "2020-01-01"
+                },
+                "nationality": {
+                  "type": "string",
+                  "example": "American"
+                },
+                "mainGenre": {
+                  "type": "string",
+                  "example": "Fiction"
+                },
+                "books": {
+                  "type": "array",
+                  "example": [
+                    "Book 1",
+                    "Book 2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Author created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "65f9a1b2c3d4e5f6g7h8i9j0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error in the provided data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
+      }
+    },
+    "/authors/{author_id}": {
+      "get": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Get a single author by ID",
+        "description": "Retrieves a specific author from the library collection using their unique MongoDB ObjectId.",
+        "parameters": [
+          {
+            "name": "author_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the author"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Author found and retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "Samuel"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Clemens"
+                },
+                "pseudonym": {
+                  "type": "string",
+                  "example": "Mark Twain"
+                },
+                "birthDate": {
+                  "type": "string",
+                  "example": "1835-11-30"
+                },
+                "deathDate": {
+                  "type": "string",
+                  "example": "1910-04-21"
+                },
+                "nationality": {
+                  "type": "string",
+                  "example": "American"
+                },
+                "mainGenre": {
+                  "type": "string",
+                  "example": "Fiction"
+                },
+                "books": {
+                  "type": "array",
+                  "example": [
+                    "The Great Gatsby",
+                    "To Kill a Mockingbird"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "pseudonym"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Author not found in the library collection"
+          },
+          "500": {
+            "description": "Internal server error while retrieving the author details"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Update an author",
+        "description": "Updates an existing author by their ID.",
+        "parameters": [
+          {
+            "name": "author_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the author to update"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update user information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "pseudonym": {
+                  "type": "string",
+                  "example": "John Doe"
+                },
+                "birthDate": {
+                  "type": "string",
+                  "example": "1980-01-01"
+                },
+                "deathDate": {
+                  "type": "string",
+                  "example": "2020-01-01"
+                },
+                "nationality": {
+                  "type": "string",
+                  "example": "American"
+                },
+                "mainGenre": {
+                  "type": "string",
+                  "example": "Fiction"
+                },
+                "books": {
+                  "type": "array",
+                  "example": [
+                    "Book 1",
+                    "Book 2"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
+            "description": "Author information updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "65f9a1b2c3d4e5f6g7h8i9j0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error in the provided data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Authors"
+        ],
+        "summary": "Delete an author",
+        "description": "Permanently removes an author from the database using their unique ID.",
+        "parameters": [
+          {
+            "name": "author_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the author to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Author   successfully."
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Author not found. No deletion was performed."
+          },
+          "500": {
+            "description": "Internal server error while attempting to delete the author"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       }
     },
     "/contacts/": {
       "get": {
-        "tags": ["Library Users"],
-        "description": "Get all library users. No authentication required.",
-        "produces": ["application/json"],
+        "tags": [
+          "Library Users"
+        ],
+        "summary": "Get all library users",
+        "description": "Retrieves a list of all library users registered in the database.",
+        "produces": [
+          "application/json"
+        ],
         "responses": {
-          "200": { "description": "OK" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "200": {
+            "description": "A list of library users retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                  },
+                  "membershipType": {
+                    "type": "string",
+                    "example": "standart"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "555-0199"
+                  },
+                  "joinDate": {
+                    "type": "string",
+                    "example": "2026-04-03"
+                  },
+                  "birthday": {
+                    "type": "string",
+                    "example": "1995-08-24"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "membershipType",
+                  "phone",
+                  "joinDate",
+                  "birthday"
+                ]
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error while retrieving the user list"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       },
       "post": {
-        "tags": ["Library Users"],
-        "description": "Create a new library user. Requires authentication.",
+        "tags": [
+          "Library Users"
+        ],
+        "summary": "Create a new library user",
+        "description": "Creates a new contact after validating first name, last name, email, and membership type.",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "description": "New user information",
             "required": true,
             "schema": {
               "type": "object",
-              "required": ["firstName", "lastName", "email", "membershipType", "phone", "joinDate", "birthday"],
               "properties": {
-                "firstName":      { "type": "string",  "example": "Jane" },
-                "lastName":       { "type": "string",  "example": "Doe" },
-                "email":          { "type": "string",  "example": "jane@example.com" },
-                "membershipType": { "type": "string",  "example": "standard" },
-                "phone":          { "type": "string",  "example": "555-123-4567" },
-                "joinDate":       { "type": "string",  "example": "March 1, 2024" },
-                "birthday":       { "type": "string",  "example": "April 17, 1993" }
-              }
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "membershipType": {
+                  "type": "string",
+                  "example": "standart"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "555-0199"
+                },
+                "joinDate": {
+                  "type": "string",
+                  "example": "2026-04-03"
+                },
+                "birthday": {
+                  "type": "string",
+                  "example": "1995-08-24"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "membershipType",
+                "phone",
+                "joinDate",
+                "birthday"
+              ]
             }
           }
         ],
         "responses": {
-          "201": { "description": "Created" },
-          "400": { "description": "Bad Request - Validation Error" },
-          "401": { "description": "Unauthorized - Must be logged in" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "201": {
+            "description": "User created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "65f9a1b2c3d4e5f6g7h8i9j0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error in the provided data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       }
     },
     "/contacts/{id}": {
       "get": {
-        "tags": ["Library Users"],
-        "description": "Get a library user by ID. No authentication required.",
-        "produces": ["application/json"],
+        "tags": [
+          "Library Users"
+        ],
+        "summary": "Get a single library user by ID",
+        "description": "Returns a specific user from the database using their unique MongoDB ObjectId.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the library user"
+          }
         ],
         "responses": {
-          "200": { "description": "OK" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
+          "200": {
+            "description": "User found and retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "membershipType": {
+                  "type": "string",
+                  "example": "standart"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "555-0199"
+                },
+                "joinDate": {
+                  "type": "string",
+                  "example": "2026-04-03"
+                },
+                "birthday": {
+                  "type": "string",
+                  "example": "1995-08-24"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "membershipType",
+                "phone",
+                "joinDate",
+                "birthday"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "User not found in the database"
+          },
+          "500": {
+            "description": "Internal server error while retrieving user"
+          }
         }
       },
       "put": {
-        "tags": ["Library Users"],
-        "description": "Update a library user by ID. Requires authentication.",
+        "tags": [
+          "Library Users"
+        ],
+        "summary": "Update a library user",
+        "description": "Updates an user after validating first name, last name, email, and membership type.",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
+            "description": "Update user information",
             "required": true,
             "schema": {
               "type": "object",
-              "required": ["firstName", "lastName", "email", "membershipType", "phone", "joinDate", "birthday"],
               "properties": {
-                "firstName":      { "type": "string",  "example": "Jane" },
-                "lastName":       { "type": "string",  "example": "Doe" },
-                "email":          { "type": "string",  "example": "jane@example.com" },
-                "membershipType": { "type": "string",  "example": "premium" },
-                "phone":          { "type": "string",  "example": "555-123-4567" },
-                "joinDate":       { "type": "string",  "example": "March 1, 2024" },
-                "birthday":       { "type": "string",  "example": "April 17, 1993" }
-              }
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "membershipType": {
+                  "type": "string",
+                  "example": "standart"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "555-0199"
+                },
+                "joinDate": {
+                  "type": "string",
+                  "example": "2026-04-03"
+                },
+                "birthday": {
+                  "type": "string",
+                  "example": "1995-08-24"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "membershipType",
+                "phone",
+                "joinDate",
+                "birthday"
+              ]
             }
           }
         ],
         "responses": {
-          "204": { "description": "No Content" },
-          "400": { "description": "Bad Request - Validation Error" },
-          "401": { "description": "Unauthorized - Must be logged in" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "204": {
+            "description": "User updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "65f9a1b2c3d4e5f6g7h8i9j0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error in the provided data"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       },
       "delete": {
-        "tags": ["Library Users"],
-        "description": "Delete a library user by ID. Requires authentication.",
+        "tags": [
+          "Library Users"
+        ],
+        "summary": "Delete a library user",
+        "description": "Permanently removes a library user from the database using their unique ID.",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the user to delete"
+          }
         ],
         "responses": {
-          "200": { "description": "OK" },
-          "401": { "description": "Unauthorized - Must be logged in" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "200": {
+            "description": "User deleted successfully. Returns an empty response body."
+          },
+          "404": {
+            "description": "User not found. No deletion was performed."
+          },
+          "500": {
+            "description": "Internal server error while attempting to delete the user"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       }
     },
     "/books/": {
       "get": {
-        "tags": ["Books"],
-        "description": "Get all books. No authentication required.",
-        "produces": ["application/json"],
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get all library books",
+        "description": "Retrieves a list of all library books registered in the database.",
+        "produces": [
+          "application/json"
+        ],
         "responses": {
-          "200": { "description": "OK" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "200": {
+            "description": "A list of library users retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Amazing Book"
+                  },
+                  "author": {
+                    "type": "string",
+                    "example": "Jane Doe"
+                  },
+                  "genre": {
+                    "type": "string",
+                    "example": "Adventure"
+                  },
+                  "publishedYear": {
+                    "type": "string",
+                    "example": "2018"
+                  },
+                  "isbn": {
+                    "type": "string",
+                    "example": "978-0743273565"
+                  }
+                },
+                "required": [
+                  "title",
+                  "author",
+                  "genre",
+                  "publishedYear",
+                  "isbn"
+                ]
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error while retrieving the book list"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       },
       "post": {
-        "tags": ["Books"],
-        "description": "Create a new book. Requires authentication.",
+        "tags": [
+          "Books"
+        ],
+        "summary": "Create a new book",
+        "description": "Creates a new book after validating title, author, genre, publishedYear, isbn.",
         "parameters": [
           {
             "name": "body",
             "in": "body",
+            "description": "New book information",
             "required": true,
             "schema": {
               "type": "object",
-              "required": ["title", "author", "genre", "publishedYear", "isbn"],
               "properties": {
-                "title":         { "type": "string",  "example": "The Great Gatsby" },
-                "author":        { "type": "string",  "example": "F. Scott Fitzgerald" },
-                "genre":         { "type": "string",  "example": "Fiction" },
-                "publishedYear": { "type": "integer", "example": 1925 },
-                "isbn":          { "type": "string",  "example": "978-0-7432-7356-5" }
-              }
+                "title": {
+                  "type": "string",
+                  "example": "Amazing Book"
+                },
+                "author": {
+                  "type": "string",
+                  "example": "Jane Doe"
+                },
+                "genre": {
+                  "type": "string",
+                  "example": "Adventure"
+                },
+                "publishedYear": {
+                  "type": "string",
+                  "example": "2018"
+                },
+                "isbn": {
+                  "type": "string",
+                  "example": "978-0743273565"
+                }
+              },
+              "required": [
+                "title",
+                "author",
+                "genre",
+                "publishedYear",
+                "isbn"
+              ]
             }
           }
         ],
         "responses": {
-          "201": { "description": "Created" },
-          "400": { "description": "Bad Request - Validation Error" },
-          "401": { "description": "Unauthorized - Must be logged in" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "201": {
+            "description": "Book created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "65f9a1b2c3d4e5f6g7h8i9j0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error in the provided data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       }
     },
     "/books/{id}": {
       "get": {
-        "tags": ["Books"],
-        "description": "Get a book by ID. No authentication required.",
-        "produces": ["application/json"],
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get a single book by ID",
+        "description": "Retrieves a specific book from the library collection using its unique MongoDB ObjectId.",
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the book"
+          }
         ],
         "responses": {
-          "200": { "description": "OK" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "200": {
+            "description": "Book found and retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Amazing Book"
+                },
+                "author": {
+                  "type": "string",
+                  "example": "Jane Doe"
+                },
+                "genre": {
+                  "type": "string",
+                  "example": "Adventure"
+                },
+                "publishedYear": {
+                  "type": "string",
+                  "example": "2018"
+                },
+                "isbn": {
+                  "type": "string",
+                  "example": "978-0743273565"
+                }
+              },
+              "required": [
+                "title",
+                "author",
+                "genre",
+                "publishedYear",
+                "isbn"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Book not found in the library collection"
+          },
+          "500": {
+            "description": "Internal server error while retrieving the book details"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       },
       "put": {
-        "tags": ["Books"],
-        "description": "Update a book by ID. Requires authentication.",
+        "tags": [
+          "Books"
+        ],
+        "summary": "Update a book information",
+        "description": "Updates the book information after validating title, author, genre, publishedYear, isbn.",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
+            "description": "Update user information",
             "required": true,
             "schema": {
               "type": "object",
-              "required": ["title", "author", "genre", "publishedYear", "isbn"],
               "properties": {
-                "title":         { "type": "string",  "example": "The Great Gatsby" },
-                "author":        { "type": "string",  "example": "F. Scott Fitzgerald" },
-                "genre":         { "type": "string",  "example": "Classic" },
-                "publishedYear": { "type": "integer", "example": 1925 },
-                "isbn":          { "type": "string",  "example": "978-0-7432-7356-5" }
-              }
+                "title": {
+                  "type": "string",
+                  "example": "Amazing Book"
+                },
+                "author": {
+                  "type": "string",
+                  "example": "Jane Doe"
+                },
+                "genre": {
+                  "type": "string",
+                  "example": "Adventure"
+                },
+                "publishedYear": {
+                  "type": "string",
+                  "example": "2018"
+                },
+                "isbn": {
+                  "type": "string",
+                  "example": "978-0743273565"
+                }
+              },
+              "required": [
+                "title",
+                "author",
+                "genre",
+                "publishedYear",
+                "isbn"
+              ]
             }
           }
         ],
         "responses": {
-          "204": { "description": "No Content" },
-          "400": { "description": "Bad Request - Validation Error" },
-          "401": { "description": "Unauthorized - Must be logged in" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
-        }
+          "204": {
+            "description": "Book information updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "65f9a1b2c3d4e5f6g7h8i9j0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error in the provided data"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       },
       "delete": {
-        "tags": ["Books"],
-        "description": "Delete a book by ID. Requires authentication.",
+        "tags": [
+          "Books"
+        ],
+        "summary": "Delete a book",
+        "description": "Permanently removes a book from the database using their unique ID.",
         "parameters": [
-          { "name": "id", "in": "path", "required": true, "type": "string" }
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the book to delete"
+          }
         ],
         "responses": {
-          "200": { "description": "OK" },
-          "401": { "description": "Unauthorized - Must be logged in" },
-          "404": { "description": "Not Found" },
-          "500": { "description": "Internal Server Error" }
+          "200": {
+            "description": "Book deleted successfully. Returns an empty response body."
+          },
+          "404": {
+            "description": "Book not found. No deletion was performed."
+          },
+          "500": {
+            "description": "Internal server error while attempting to delete the book"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
+      }
+    },
+    "/staff/": {
+      "get": {
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Get all library staff",
+        "description": "Retrieves a list of all library staff registered in the database.",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "A list of library staff retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "dateBirth": {
+                    "type": "string",
+                    "example": "08-02-2000"
+                  },
+                  "position": {
+                    "type": "string",
+                    "example": "cashier"
+                  },
+                  "startDay": {
+                    "type": "string",
+                    "example": "06-24-2025"
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "email",
+                  "role",
+                  "dateBirth",
+                  "position",
+                  "startDay"
+                ]
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error while retrieving the staff list"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Create a new staff member",
+        "description": "Creates a new staff member after validating firstName, lastName, email, role, dateBirth, position, startDay.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "New staff information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "dateBirth": {
+                  "type": "string",
+                  "example": "08-02-2000"
+                },
+                "position": {
+                  "type": "string",
+                  "example": "cashier"
+                },
+                "startDay": {
+                  "type": "string",
+                  "example": "06-24-2025"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "role",
+                "dateBirth",
+                "position",
+                "startDay"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Staff member created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "65f9a1b2c3d4e5f6g7h8i9j0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error in the provided data"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
+      }
+    },
+    "/staff/{id}": {
+      "get": {
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Get a single staff member by ID",
+        "description": "Returns a specific staff member from the database using their unique MongoDB ObjectId.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the staff member"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Staff member found and retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "dateBirth": {
+                  "type": "string",
+                  "example": "08-02-2000"
+                },
+                "position": {
+                  "type": "string",
+                  "example": "cashier"
+                },
+                "startDay": {
+                  "type": "string",
+                  "example": "06-24-2025"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "role",
+                "dateBirth",
+                "position",
+                "startDay"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Staff member not found in the database"
+          },
+          "500": {
+            "description": "Internal server error while retrieving a staff member"
+          }
         }
+      },
+      "put": {
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Update a staff member",
+        "description": "Updates an staff member after validating firstName, lastName, email, role, dateBirth, position, startDay.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Update staff member information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                },
+                "dateBirth": {
+                  "type": "string",
+                  "example": "08-02-2000"
+                },
+                "position": {
+                  "type": "string",
+                  "example": "cashier"
+                },
+                "startDay": {
+                  "type": "string",
+                  "example": "06-24-2025"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName",
+                "email",
+                "role",
+                "dateBirth",
+                "position",
+                "startDay"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "User updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "65f9a1b2c3d4e5f6g7h8i9j0"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error in the provided data"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Staff"
+        ],
+        "summary": "Delete a staff member",
+        "description": "Permanently removes a staff member from the database using their unique ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The unique ID of the staff member to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Staff member deleted successfully. Returns an empty response body."
+          },
+          "404": {
+            "description": "Staff member not found. No deletion was performed."
+          },
+          "500": {
+            "description": "Internal server error while attempting to delete the staff member"
+          }
+        },
+        "security": [
+          {
+            "github_auth": []
+          }
+        ]
       }
     }
   }
