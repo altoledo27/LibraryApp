@@ -2,6 +2,29 @@ const db = require('../models');
 const Authors = db.authors;
 
 exports.findAll = async (req, res) => {
+    /* #swagger.tags = ['Authors']
+     #swagger.summary = 'Get all library Authors'
+     #swagger.description = 'Retrieves a list of all Author books registered in the database.'
+     #swagger.security = [{ "github_auth": [] }]
+
+     #swagger.responses[200] = { 
+        description: 'A list of library authors retrieved successfully',
+        schema: [{ 
+            $firstName: 'Samuel',
+            $lastName: 'Clemens',
+            $pseudonym: 'Mark Twain',
+            birthDate: '1835-11-30',
+            deathDate: '1910-04-21',
+            nationality: 'American',
+            mainGenre: 'Fiction',
+            books: ['The Great Gatsby', 'To Kill a Mockingbird']
+        }]
+     }
+
+     #swagger.responses[500] = { 
+        description: 'Internal server error while retrieving the author list' 
+     }
+  */
   try {
     const data = await Authors.find();
     if (!data) {
@@ -16,6 +39,8 @@ exports.findAll = async (req, res) => {
 };
 
 exports.findOne = async (req, res) => {
+   /* #swagger.tags = ['Authors']
+   */
   const id = req.params.author_id;
   try {
     const data = await Authors.findById(id);
@@ -26,12 +51,15 @@ exports.findOne = async (req, res) => {
     }
     res.send(data);
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: 'Error retrieving author with id: ' + id });
   }
 };
 
 exports.create = async (req, res) => {
-  /* #swagger.description = 'Endpoint to create a new author in the database.'
+  /* 
+    #swagger.tags = ['Authors']
+    #swagger.description = 'Endpoint to create a new author in the database.'
     #swagger.parameters['body'] = {
     in: 'body',
     description: 'Author create data',
@@ -67,6 +95,7 @@ exports.create = async (req, res) => {
     const data = await author.save();
     res.send(data);
   } catch (err) {
+    console.log(err);
     res.status(500).send({
       message: 'Some error occurred while creating the author.',
     });
@@ -74,7 +103,9 @@ exports.create = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  /* #swagger.description = 'Endpoint to update an existing author by its ID.'
+  /*
+    #swagger.tags = ['Authors']
+    #swagger.description = 'Endpoint to update an existing author by its ID.'
     #swagger.parameters['body'] = {
     in: 'body',
     description: 'Author update data',
@@ -105,6 +136,7 @@ exports.update = async (req, res) => {
     }
     res.send({ message: 'Author was updated successfully.' });
   } catch (err) {
+    console.log(err);
     res.status(500).send({
       message: 'Error updating author with id: ' + id,
     });
@@ -112,7 +144,9 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  /* #swagger.description = 'Endpoint to delete an existing author by its ID.' */
+  /*
+  #swagger.tags = ['Authors']
+  #swagger.description = 'Endpoint to delete an existing author by its ID.' */
   const id = req.params.author_id;
   try {
     const data = await Authors.findByIdAndDelete(id);
@@ -123,6 +157,7 @@ exports.delete = async (req, res) => {
     }
     res.send({ message: 'Author was deleted successfully!' });
   } catch (err) {
+    console.log(err);
     res.status(500).send({
       message: 'Error deleting author with id: ' + id,
     });

@@ -34,7 +34,7 @@ const doc = {
 }
 
 const outputFile = './swagger.json';
-const routes = ['./routes/index.js'];
+const routes = ['./src/routes/index.js'];
 
 
 swaggerAutogen(outputFile, routes, doc);
