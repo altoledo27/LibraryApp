@@ -194,7 +194,7 @@ const updateBook = async (req, res) => {
 };
 
 const deleteBook = async (req, res) => {
-  /* #swagger.tags = ['Book']
+  /* #swagger.tags = ['Books']
      #swagger.summary = 'Delete a book'
      #swagger.description = 'Permanently removes a book from the database using their unique ID.'
      #swagger.security = [{ "github_auth": [] }]

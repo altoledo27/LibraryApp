@@ -2,24 +2,24 @@ const mongodb = require('../config/db.config');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAllUsers = async () => {
-  const result = await mongodb.getDatabase().collection('users').find();
+  const result = await mongodb.getDatabase().collection('contacts').find();
   return result.toArray();
 };
 
 const getUserById = async (id) => {
   const userId = new ObjectId(id);
-  const result = await mongodb.getDatabase().collection('users').find({ _id: userId });
-  const users = await result.toArray();
-  return users[0];
+  const result = await mongodb.getDatabase().collection('contacts').find({ _id: userId });
+  const contacts = await result.toArray();
+  return contacts[0];
 };
 
 const createUser = async (user) => {
-  return await mongodb.getDatabase().collection('users').insertOne(user);
+  return await mongodb.getDatabase().collection('contacts').insertOne(user);
 };
 
 const updateUser = async (id, user) => {
   const userId = new ObjectId(id);
-  return await mongodb.getDatabase().collection('users').replaceOne(
+  return await mongodb.getDatabase().collection('contacts').replaceOne(
     { _id: userId },
     user
   );
@@ -27,7 +27,7 @@ const updateUser = async (id, user) => {
 
 const deleteUser = async (id) => {
   const userId = new ObjectId(id);
-  return await mongodb.getDatabase().collection('users').deleteOne({ _id: userId });
+  return await mongodb.getDatabase().collection('contacts').deleteOne({ _id: userId });
 };
 
 module.exports = {

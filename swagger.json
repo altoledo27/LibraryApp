@@ -958,7 +958,7 @@
       },
       "delete": {
         "tags": [
-          "Book"
+          "Books"
         ],
         "summary": "Delete a book",
         "description": "Permanently removes a book from the database using their unique ID.",
