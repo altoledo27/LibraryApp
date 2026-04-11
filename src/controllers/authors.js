@@ -30,7 +30,7 @@ exports.findAll = async (req, res) => {
     if (!data) {
       return res.status(400).send({ message: 'Error retrieving authors data' });
     }
-    res.send(data);
+    res.status(200).send(data);
   } catch (err) {
     res.status(500).send({
       message: err.message || 'Some error occurred while retrieving authors.',
